@@ -11,8 +11,8 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # Azure 서비스 키와 엔드포인트 설정
-azure_endpoint = "서비스키"
-azure_key = "엔드포인트"
+azure_endpoint = "https://t-ocr.cognitiveservices.azure.com/"
+azure_key = "e4b9d545f7ef4461a7ceedb920f46ef2"
 
 @app.route('/')
 def index():
@@ -22,28 +22,23 @@ def index():
 @app.route('/files', methods=['GET', 'POST'])
 def files():
     if request.method == 'POST':
-        file = request.files['file']
-        if file and file.filename:
-            timestamp = datetime.now().strftime('%y%m%d%H%M')
-            filename = secure_filename(file.filename)
-            new_filename = f"{timestamp}_{filename}"
-            os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
-            file.save(file_path)
+        files = request.files.getlist('file') # 복수 파일 처리
+        for file in files:
+            if file and file.filename:
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
 
-            # Azure Document Intelligence로부터 텍스트 추출
-            text_results = analyze_document(azure_endpoint, azure_key, file_path)
+                # Azure Document Intelligence로부터 텍스트 추출
+                text_results = analyze_document(azure_endpoint, azure_key, file_path)
 
-            # 추출된 모든 텍스트를 콘솔에 출력
-            print("추출된 텍스트:")
-            for text in text_results:
-                print(text)
+                # 추출된 데이터를 처리하여 CSV 파일에 추가
+                data = extract_data(text_results)
+                # CSV 파일명을 고정합니다.
+                csv_file_path = os.path.join(app.config['UPLOAD_FOLDER'], "fixed_data.csv")
+                append_data_to_csv(data, csv_file_path)
 
-            data = extract_data(text_results)
-            csv_file_path = os.path.join(app.config['UPLOAD_FOLDER'], f"data_{new_filename}.csv")
-            append_data_to_csv(data, csv_file_path)
-
-            return render_template('result.html', csv_filename=f"data_{new_filename}.csv")
+        return render_template('result.html', csv_filename="fixed_data.csv")
     else:
         return render_template('files.html')
 
