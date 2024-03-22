@@ -11,8 +11,8 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # Azure 서비스 키와 엔드포인트 설정
-azure_endpoint = "https://t-ocr.cognitiveservices.azure.com/"
-azure_key = "e4b9d545f7ef4461a7ceedb920f46ef2"
+azure_endpoint = "엔드포인트"
+azure_key = "기본키"
 
 @app.route('/')
 def index():
