@@ -6,13 +6,14 @@ from document_analysis import analyze_document
 from csv_writer import extract_data, append_data_to_csv
 import re
 from flask import send_from_directory
+import pandas as pd
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # Azure 서비스 키와 엔드포인트 설정
-azure_endpoint = "엔드포인트"
-azure_key = "기본키"
+azure_endpoint = "https://t-ocr.cognitiveservices.azure.com/"
+azure_key = "e4b9d545f7ef4461a7ceedb920f46ef2"
 
 @app.route('/')
 def index():
@@ -45,6 +46,12 @@ def files():
 @app.route('/downloads/<filename>')
 def download_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+
+@app.route('/get-csv')
+def get_csv():
+    csv_file_path = os.path.join(app.config['UPLOAD_FOLDER'], "fixed_data.csv")
+    data = pd.read_csv(csv_file_path).to_json(orient='records')
+    return data
 
 if __name__ == '__main__':
     app.run(port=9999, debug=True)

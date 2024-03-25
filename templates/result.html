@@ -6,12 +6,17 @@
     <title>파일 결과</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/downloadPreview.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="container mt-5">
         <h2>'파일이 저장되었습니다. 분석 결과를 확인하세요.'</h2>
         <a href="{{ url_for('download_file', filename=csv_filename) }}" class="btn btn-primary">CSV 결과 다운로드</a>
         <a href="/files" class="btn btn-secondary">뒤로가기</a>
+        <table class="table" id="csv-preview-table">
+            <!-- JavaScript가 여기에 행을 삽입할 것입니다 -->
+        </table>
     </div>
 </body>
 </html>

@@ -1,0 +1,103 @@
+/* 기본 스타일 */
+/* Base style for pdf-container */
+.pdf-container {
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px; /* Or as needed */
+    width: 100%; /* On smaller screens, take full width */
+    max-width: 100%; /* Prevent it from exceeding the bounds of its container */
+    /* Add any other base styles you need here */
+}
+
+/* Media query for wider screens: Adjust the min-width as per your requirement */
+@media screen and (min-width: 1200px) {
+    /* Set the flex parent container */
+    .pdf-preview-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px; /* Adjust the gap as needed */
+    }
+
+    /* Set the flex children to take up half the space */
+    .pdf-container {
+        width: calc(50% - 20px); /* Take up half the width minus the gap */
+    }
+}
+
+/* Media query for narrower screens */
+@media screen and (max-width: 1199px) {
+    /* Allow each .pdf-container to take full width on narrower screens */
+    .pdf-container {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+.preview-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
+    background-color: #f2f2f2;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+
+
+/* style.css 내의 테이블 스타일링 */
+#csv-preview-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+#csv-preview-table th, #csv-preview-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.result-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
+    background-color: #f2f2f2;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+h2 {
+    color: #333;
+    border-bottom: 4px solid #a79600;
+    padding-bottom: 5px;
+    position: relative;
+    margin-bottom: 20px; /* Adjust as needed for spacing */
+  }
+
+  h2:before {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 30px;
+    bottom: -30px;
+    border: 15px solid;
+    border-color: #a79600 transparent transparent #a79600;
+  }
+
+  h2:after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 34px;
+    bottom: -20px;
+    border: 15px solid;
+    border-color: #fff transparent transparent #fff;
+  }
+
