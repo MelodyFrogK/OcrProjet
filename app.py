@@ -1,19 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify
 from werkzeug.utils import secure_filename
 import os
-from datetime import datetime
 from document_analysis import analyze_document
 from csv_writer import extract_data, append_data_to_csv
-import re
-from flask import send_from_directory
 import pandas as pd
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # Azure 서비스 키와 엔드포인트 설정
-azure_endpoint = "엔드포인트"
-azure_key = "기본키"
+azure_endpoint = "https://t-ocr.cognitiveservices.azure.com/"
+azure_key = "e4b9d545f7ef4461a7ceedb920f46ef2"
 
 @app.route('/')
 def index():
@@ -39,9 +36,15 @@ def files():
                 csv_file_path = os.path.join(app.config['UPLOAD_FOLDER'], "fixed_data.csv")
                 append_data_to_csv(data, csv_file_path)
 
-        return render_template('result.html', csv_filename="fixed_data.csv")
+        return jsonify({'redirectURL': url_for('result')})
     else:
         return render_template('files.html')
+
+@app.route('/result')
+def result():
+    # 여기서는 단순히 'result.html' 템플릿을 렌더링합니다.
+    # 실제 애플리케이션에서는 필요에 따라 추가 데이터를 전달할 수 있습니다.
+    return render_template('result.html')
 
 @app.route('/downloads/<filename>')
 def download_file(filename):
