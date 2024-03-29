@@ -1,7 +1,6 @@
 // load.js 파일 내용
 document.getElementById('uploadForm').addEventListener('submit', function(event) {
     event.preventDefault(); // 폼 제출 기본 동작 방지
-
     showLoadingScreen();
 
     const formData = new FormData(this);
